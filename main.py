@@ -14,6 +14,7 @@ CLASSES = load_classes("data/coco.names")
 
 
 def main():
+    #Parsing arguments
     arguments_parser = ArgumentsParser()
     args = arguments_parser.parse_arguments()
     images = args.images
