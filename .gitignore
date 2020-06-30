@@ -1,4 +1,6 @@
-det/*.jpg
-imgs/*.jpg
+det_photos/*.jpg
+photos/*.jpg
+bot/det_photos/*.jpg
+bot/photos/*.jpg
 video.py
 /venv/

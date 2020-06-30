@@ -10,10 +10,10 @@ from util import *
 class Darknet(nn.Module):
     def __init__(self, cfgfile):
         super(Darknet, self).__init__()
-        cfg_parser = CfgParser(cfgfile)
-        self.blocks = cfg_parser.parse_cfg()
-        module_creator = ModuleCreator(self.blocks)
-        self.net_info, self.module_list = module_creator.create_modules()
+        self.cfg_parser = CfgParser()
+        self.blocks = self.cfg_parser.parse_cfg(cfgfile)
+        self.module_creator = ModuleCreator(self.blocks)
+        self.net_info, self.module_list = self.module_creator.create_modules()
 
     def forward(self, x, CUDA):
         modules = self.blocks[1:]

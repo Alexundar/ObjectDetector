@@ -1,11 +1,12 @@
 from __future__ import division
 
+import os.path as osp
 import time
 
 from arguments_parser import ArgumentsParser
 from darknet import Darknet
 from detector import Detector
-from image_manager import ImageManager
+from image_manager import Cv2ImageManager
 from util import *
 
 CUDA = torch.cuda.is_available()
@@ -14,7 +15,7 @@ CLASSES = load_classes("data/coco.names")
 
 
 def main():
-    #Parsing arguments
+    # Parsing arguments
     arguments_parser = ArgumentsParser()
     args = arguments_parser.parse_arguments()
     images = args.images
@@ -41,9 +42,10 @@ def main():
     model.eval()
 
     read_dir = time.time()
+
     # Detection phase
     load_batch = time.time()
-    image_manager = ImageManager()
+    image_manager = Cv2ImageManager()
     loaded_images, list_of_images = image_manager.read_images(images)
     im_batches = list(map(prep_image, loaded_images, [inp_dim for x in range(len(list_of_images))]))
     im_dim_list = [(x.shape[1], x.shape[0]) for x in loaded_images]
@@ -72,7 +74,8 @@ def main():
     draw = time.time()
 
     det_images = list(map(lambda x: image_manager.draw_bounding_boxes(x, loaded_images, CLASSES), output))
-    det_names = list(map(lambda x: "{}/det_{}.jpg".format(args.det, x), list(range(len(list_of_images)))))
+    det_names = list(map(lambda x: "{det}/{x}".format(det=args.det, x=x),
+                         [osp.basename(image_name) for image_name in list_of_images]))
     image_manager.write_images(det_names, det_images)
 
     end = time.time()

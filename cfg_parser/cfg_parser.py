@@ -1,9 +1,9 @@
-class CfgParser:
-    def __init__(self, cfgfile):
-        self.cfgfile = cfgfile
+from cfg_parser.abstract_cfg_parser import AbstractCfgParser
 
-    def parse_cfg(self):
-        file = open(self.cfgfile, 'r')
+
+class CfgParser(AbstractCfgParser):
+    def parse_cfg(self, cfgfile):
+        file = open(cfgfile, 'r')
         lines = file.read().split('\n')  # store the lines in a list
         lines = [x for x in lines if len(x) > 0]  # get read of the empty lines
         lines = [x for x in lines if x[0] != '#']  # get rid of comments

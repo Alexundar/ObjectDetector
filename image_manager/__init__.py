@@ -1,0 +1,1 @@
+from image_manager.cv2_image_manager import Cv2ImageManager
